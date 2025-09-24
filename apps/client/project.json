@@ -1,5 +1,5 @@
 {
-    "name": "@real-time-chat/client",
+    "name": "client",
     "root": "apps/client",
     "sourceRoot": "apps/client/src",
     "projectType": "application",
@@ -7,7 +7,18 @@
         "serve": {
             "executor": "@nx/next:server",
             "options": {
-                "buildTarget": "client:build"
+                "buildTarget": "client:build",
+                "dev": true
+            },
+            "configurations": {
+                "development": {
+                    "buildTarget": "client:build:development",
+                    "dev": true
+                },
+                "production": {
+                    "buildTarget": "client:build:production",
+                    "dev": false
+                }
             }
         },
         "build": {

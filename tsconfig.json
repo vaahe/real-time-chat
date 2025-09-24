@@ -9,7 +9,7 @@
       ],
       "@real-time-chat/client/*": [
         "apps/client/src/*"
-      ],
+      ]
     }
   },
   "references": [
@@ -21,6 +21,9 @@
     },
     {
       "path": "./apps/client"
+    },
+    {
+      "path": "./libs"
     }
   ]
 }
