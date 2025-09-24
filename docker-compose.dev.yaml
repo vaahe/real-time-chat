@@ -1,0 +1,18 @@
+services:
+  server-dev:
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile.dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV = development
+
+  client-dev:
+    build:
+      context: .
+      dockerfile: apps/client/Dockerfile.dev
+    ports:
+      - "4200:4200"
+    environment:
+      - NODE_ENV = development
