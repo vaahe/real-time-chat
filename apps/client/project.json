@@ -1,0 +1,36 @@
+{
+    "name": "@real-time-chat/client",
+    "root": "apps/client",
+    "sourceRoot": "apps/client/src",
+    "projectType": "application",
+    "targets": {
+        "serve": {
+            "executor": "@nx/next:server",
+            "options": {
+                "buildTarget": "client:build"
+            }
+        },
+        "build": {
+            "executor": "@nx/next:build",
+            "options": {
+                "outputPath": "dist/apps/client"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "options": {
+                "lintFilePatterns": [
+                    "apps/client/**/*.ts",
+                    "apps/client/**/*.tsx"
+                ]
+            }
+        },
+        "test": {
+            "executor": "@nx/jest:jest",
+            "options": {
+                "jestConfig": "apps/client/jest.config.ts",
+                "passWithNoTests": true
+            }
+        }
+    }
+}

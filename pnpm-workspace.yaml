@@ -1,0 +1,6 @@
+packages:
+  - "apps/*"
+  - "libs/*"
+  - "server"
+  - "server-e2e"
+ignore-workspace-root-check: true
