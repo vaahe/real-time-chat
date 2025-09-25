@@ -10,7 +10,7 @@ const swcJestConfig = JSON.parse(
 swcJestConfig.swcrc = false;
 
 export default {
-  displayName: '@real-time-chat/server',
+  displayName: '@real-time-chat/auth-service',
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
   transform: {

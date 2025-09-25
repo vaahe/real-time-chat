@@ -1,5 +1,5 @@
 {
-  "name": "@real-time-chat/server",
+  "name": "auth-service",
   "version": "0.0.1",
   "private": true,
   "nx": {
@@ -11,7 +11,7 @@
           "args": [
             "--node-env=production"
           ],
-          "cwd": "apps/server"
+          "cwd": "apps/auth-service"
         },
         "configurations": {
           "development": {
@@ -28,8 +28,8 @@
         "cache": true,
         "executor": "@nx/js:prune-lockfile",
         "outputs": [
-          "{workspaceRoot}/apps/server/dist/package.json",
-          "{workspaceRoot}/apps/server/dist/pnpm-lock.yaml"
+          "{workspaceRoot}/apps/auth-service/dist/package.json",
+          "{workspaceRoot}/apps/auth-service/dist/pnpm-lock.yaml"
         ],
         "options": {
           "buildTarget": "build"
@@ -41,7 +41,7 @@
         ],
         "cache": true,
         "outputs": [
-          "{workspaceRoot}/apps/server/dist/workspace_modules"
+          "{workspaceRoot}/apps/auth-service/dist/workspace_modules"
         ],
         "executor": "@nx/js:copy-workspace-modules",
         "options": {
@@ -63,15 +63,15 @@
           "build"
         ],
         "options": {
-          "buildTarget": "@real-time-chat/server:build",
+          "buildTarget": "@real-time-chat/auth-service:build",
           "runBuildTargetDependencies": false
         },
         "configurations": {
           "development": {
-            "buildTarget": "@real-time-chat/server:build:development"
+            "buildTarget": "@real-time-chat/auth-service:build:development"
           },
           "production": {
-            "buildTarget": "@real-time-chat/server:build:production"
+            "buildTarget": "@real-time-chat/auth-service:build:production"
           }
         }
       },

@@ -14,13 +14,16 @@
   },
   "references": [
     {
-      "path": "./apps/server-e2e"
-    },
-    {
-      "path": "./apps/server"
-    },
-    {
       "path": "./apps/client"
+    },
+    {
+      "path": "./apps/chat-service"
+    },
+    {
+      "path": "./apps/user-service"
+    },
+    {
+      "path": "./apps/auth-service"
     }
   ]
 }

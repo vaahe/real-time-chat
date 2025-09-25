@@ -78,12 +78,6 @@
         "targetName": "test"
       },
       "exclude": [
-        "server-e2e/**/*",
-        "apps-e2e/**/*",
-        "apps-e2e/**/*",
-        "server-e2e/**/*",
-        "server-e2e/**/*",
-        "apps/server-e2e/**/*"
       ]
     },
     {
@@ -114,9 +108,19 @@
     }
   },
   "projects": {
-    "server": {
-      "root": "apps/server",
-      "sourceRoot": "apps/server/src",
+    "auth-service": {
+      "root": "apps/auth-service",
+      "sourceRoot": "apps/auth-service/src",
+      "projectType": "application"
+    },
+    "chat-service": {
+      "root": "apps/chat-service",
+      "sourceRoot": "apps/chat-service/src",
+      "projectType": "application"
+    },
+    "user-service": {
+      "root": "apps/user-service",
+      "sourceRoot": "apps/user-service",
       "projectType": "application"
     },
     "client": {

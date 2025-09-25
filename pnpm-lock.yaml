@@ -193,6 +193,10 @@ importers:
         specifier: ^5.1.4
         version: 5.1.4(webpack@5.101.3)
 
+  apps/auth-service: {}
+
+  apps/chat-service: {}
+
   apps/client:
     dependencies:
       next:
@@ -205,9 +209,7 @@ importers:
         specifier: 19.0.0
         version: 19.0.0(react@19.0.0)
 
-  apps/server: {}
-
-  apps/server-e2e: {}
+  apps/user-service: {}
 
 packages:
 

@@ -9,14 +9,12 @@
     "build:client": "nx build client",
     "lint:client": "nx lint client",
     "test:client": "nx test client",
-    "start:server:dev": "nx serve server --configuration=development",
-    "start:server:prod": "nx serve server --configuration=production",
-    "build:server": "nx build server",
-    "lint:server": "nx lint server",
-    "test:server": "nx test server",
-    "dev": "concurrently \"pnpm start:server:dev\" \"pnpm start:client:dev\"",
-    "prod": "concurrently \"pnpm build:server\" \"pnpm build:client\"",
-    "build": "pnpm build:server && pnpm build:client"
+    "start:chat-service:dev": "nx serve chat-service --configuration=development",
+    "start:chat-service:prod": "nx serve chat-service --configuration=production",
+    "build:chat-service": "nx build chat-service",
+    "lint:chat-service": "nx lint chat-service",
+    "test:chat-service": "nx test chat-service",
+    "build:all": "pnpm build:chat-service && pnpm build:client"
   },
   "private": true,
   "devDependencies": {
