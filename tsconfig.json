@@ -24,6 +24,15 @@
     },
     {
       "path": "./apps/auth-service"
+    },
+    {
+      "path": "./apps/api-gateway-e2e"
+    },
+    {
+      "path": "./apps/api-gateway"
+    },
+    {
+      "path": "./libs/proto"
     }
   ]
 }
