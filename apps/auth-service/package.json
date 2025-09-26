@@ -63,15 +63,15 @@
           "build"
         ],
         "options": {
-          "buildTarget": "@real-time-chat/auth-service:build",
+          "buildTarget": "auth-service:build",
           "runBuildTargetDependencies": false
         },
         "configurations": {
           "development": {
-            "buildTarget": "@real-time-chat/auth-service:build:development"
+            "buildTarget": "auth-service:build:development"
           },
           "production": {
-            "buildTarget": "@real-time-chat/auth-service:build:production"
+            "buildTarget": "auth-service:build:production"
           }
         }
       },

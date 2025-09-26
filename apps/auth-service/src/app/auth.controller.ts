@@ -2,9 +2,9 @@ import { Controller } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 
 @Controller()
-export class AppController {
+export class AuthController {
   @GrpcMethod('AuthService', 'Test')
-  test(data: { message: string }) {
-    return { reply: `Auth service received: ${data.message}` };
+  test(data: { name: string }): { message: string } {
+    return { message: `Auth service received: ${data.name}` };
   }
 }

@@ -63,15 +63,15 @@
           "build"
         ],
         "options": {
-          "buildTarget": "@real-time-chat/api-gateway:build",
+          "buildTarget": "api-gateway:build",
           "runBuildTargetDependencies": false
         },
         "configurations": {
           "development": {
-            "buildTarget": "@real-time-chat/api-gateway:build:development"
+            "buildTarget": "api-gateway:build:development"
           },
           "production": {
-            "buildTarget": "@real-time-chat/api-gateway:build:production"
+            "buildTarget": "api-gateway:build:production"
           }
         }
       },
