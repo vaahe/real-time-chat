@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "packageManager": "pnpm@10.17.1",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "scripts": {
     "start:client:dev": "nx serve client --configuration=development",
     "start:client:prod": "nx serve client --configuration=production",
@@ -14,7 +17,8 @@
     "build:chat-service": "nx build chat-service",
     "lint:chat-service": "nx lint chat-service",
     "test:chat-service": "nx test chat-service",
-    "build:all": "pnpm build:chat-service && pnpm build:client"
+    "build:all": "pnpm build:chat-service && pnpm build:client",
+    "proto:generate": "node scripts/proto-generate.js"
   },
   "private": true,
   "devDependencies": {
