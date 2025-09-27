@@ -1,4 +1,4 @@
-name: Publish Package to Github Packages
+name: Publish Proto Package
 
 on:
   push:
@@ -35,8 +35,7 @@ jobs:
 
       - name: Generate Typescript files from proto
         run: |
-          cd libs/proto
-          npx ts-proto --ts-proto --output src/generated src/auth.proto
+          pnpm proto:generate
 
       - name: Build proto library
         run: pnpm nx build proto
