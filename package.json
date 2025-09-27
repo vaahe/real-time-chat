@@ -3,9 +3,6 @@
   "version": "0.0.0",
   "license": "MIT",
   "packageManager": "pnpm@10.17.1",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "scripts": {
     "start:client:dev": "nx serve client --configuration=development",
     "start:client:prod": "nx serve client --configuration=production",
