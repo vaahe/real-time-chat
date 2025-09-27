@@ -3,14 +3,6 @@
   "compileOnSave": false,
   "files": [],
   "compilerOptions": {
-    "paths": {
-      "@real-time-chat/server/*": [
-        "apps/server/src/*"
-      ],
-      "@real-time-chat/client/*": [
-        "apps/client/src/*"
-      ]
-    }
   },
   "references": [
     {

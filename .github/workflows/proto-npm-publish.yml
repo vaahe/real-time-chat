@@ -1,0 +1,52 @@
+name: Publish Package to Github Packages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Checkout node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          registry-url: 'https://npm.pkg.github.com'
+          cache: 'pnpm'
+
+      - name: Install PNPM
+        run: npm install -g pnpm@10.17.1
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v2
+
+      - name: Generate Typescript files from proto
+        run: |
+          cd libs/proto
+          npx ts-proto --ts-proto --output src/generated src/auth.proto
+
+      - name: Build proto library
+        run: pnpm nx build proto
+
+      - name: Publish to Github Packages
+        run: |
+          cd dist/libs/proto
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" > .npmrc
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Cleanup
+        run: rm -f ~/.npmrc

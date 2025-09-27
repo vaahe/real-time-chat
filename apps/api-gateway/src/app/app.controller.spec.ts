@@ -1,21 +1,28 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 
 describe('AppController', () => {
-  let app: TestingModule;
+  let appController: AppController;
 
   beforeAll(async () => {
-    app = await Test.createTestingModule({
+    const moduleRef: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService],
+      providers: [
+        {
+          provide: 'AUTH_PACKAGE',
+          useValue: {
+            test: jest.fn().mockReturnValue({ message: 'ok' })
+          }
+        }
+      ]
     }).compile();
+
+    appController = moduleRef.get<AppController>(AppController);
   });
 
-  describe('getData', () => {
-    it('should return "Hello API"', () => {
-      const appController = app.get<AppController>(AppController);
-      expect(appController.getData()).toEqual({message: 'Hello API'});
+  describe('test', () => {
+    it('should return message with name', () => {
+      expect(appController.testAuth('Vahe')).toEqual({ message: "Auth service received: Vahe" });
     });
   });
 });
