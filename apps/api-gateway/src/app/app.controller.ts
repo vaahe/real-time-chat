@@ -1,10 +1,6 @@
 import { Controller, Get, Inject, Query } from '@nestjs/common';
 import type { ClientGrpc } from '@nestjs/microservices';
 
-interface AuthService {
-  test(data: { name: string }): Promise<{ message: string }>;
-}
-
 @Controller()
 export class AppController {
   private authService!: AuthService;
