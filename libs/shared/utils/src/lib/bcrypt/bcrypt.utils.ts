@@ -40,7 +40,6 @@ export async function hashPassword(password: string, saltRounds = 10): Promise<s
     }
 }
 
-
 /**
  * Compares a plain-text password with a bcrypt hash.
  * @param password - The plain-text password to compare.

@@ -3,15 +3,11 @@ import { RegisterUserRequest, RegisterUserResponse } from '@vaahe/proto';
 
 @Injectable()
 export class AuthService {
-  async registerUser(request: RegisterUserRequest): Promise<RegisterUserResponse> {
-    if (!request.email || !request.password) {
-      return {
-        data: {
-          statusCode: 400,
-          message: 'Email and password are required',
-          data: {},
-        },
-      };
-    }
+  async RegisterUser(request: RegisterUserRequest): Promise<RegisterUserResponse> {
+    const { firstName, lastName, email, password, role } = request;
+
+    const user = { firstName, lastName, email, password, role };
+
+    return { data: { statusCode: 201, message: 'User created', data: { ...user } } };
   }
 }
