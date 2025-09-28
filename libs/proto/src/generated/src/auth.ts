@@ -8,9 +8,9 @@
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { wrappers } from "protobufjs";
 import { Observable } from "rxjs";
-import { Struct } from "../google/protobuf/struct";
+import { Struct } from "../google/protobuf/struct.js";
 
-export const protobufPackage = "auth";
+export const protobufAuthPackage = "auth";
 
 export interface ServiceResponse {
   statusCode: number;
