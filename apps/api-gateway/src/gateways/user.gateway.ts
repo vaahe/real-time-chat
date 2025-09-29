@@ -1,6 +1,6 @@
+import { join } from "path";
 import { Controller, OnModuleInit } from "@nestjs/common";
 import { Client, type ClientGrpc, Transport } from "@nestjs/microservices";
-import { join } from "path";
 
 @Controller('user')
 export class UserGateway implements OnModuleInit {

@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package auth;
+
+import "google/protobuf/struct.proto";
+
+message AuthServiceResponse {
+    int32 statusCode = 1;
+    string message = 2;
+    google.protobuf.Struct data = 3;
+}
+
+// Register
+message SignUpRequest {
+    string firstName = 1;
+    string lastName = 2;
+    string email = 3;
+    string phone = 4;
+    string password = 5;
+    string role = 6;
+}
+
+message SignUpResponse {
+    AuthServiceResponse data = 1;
+}
+
+// Login
+message SignInRequest {
+    string email = 1;
+    string password = 2;
+}
+
+message SignInResponse {
+    AuthServiceResponse data = 1;
+}
+
+// Logout
+message SignOutRequest {
+    string userId = 1;
+}
+
+message SignOutResponse {
+    AuthServiceResponse data = 1;
+}
+
+// Refresh token
+message RefreshTokenRequest {
+    string refreshToken = 1;
+}
+
+message RefreshTokenResponse {
+    AuthServiceResponse data = 1;
+}
+
+
+// Service
+service AuthService {
+    rpc SignUp(SignUpRequest) returns (SignUpResponse);
+    rpc SignIn(SignInRequest) returns (SignInResponse);
+    rpc SignOut(SignOutRequest) returns (SignOutResponse);
+    rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
+}
