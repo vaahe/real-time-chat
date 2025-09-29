@@ -10,7 +10,7 @@ import { wrappers } from "protobufjs";
 import { Observable } from "rxjs";
 import { Struct } from "../../google/protobuf/struct";
 
-export const protobufPackage = "user";
+export const protobufUserPackage = "user";
 
 export interface UserServiceResponse {
   statusCode: number;

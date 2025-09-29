@@ -1,7 +1,7 @@
 const { execSync } = require("child_process");
 const { join, basename } = require("path");
 const protoFiles = require("google-proto-files");
-const { readdirSync, writeFileSync } = require("fs");
+const { readdirSync, readFileSync, writeFileSync } = require("fs");
 
 console.info("Generating TypeScript code from proto files...");
 
@@ -28,13 +28,29 @@ execSync(
     { stdio: "inherit" }
 );
 
-const files = readdirSync(`${outputPath}/src/protos/`).filter((f) => f.endsWith(".ts") && f !== "index.ts");
-const exportLines = [
-  `export * from "./google/protobuf/struct";`,
-  ...files.map((f) => {
+const protoGeneratedPath = join(outputPath, "src", "protos");
+
+const files = readdirSync(protoGeneratedPath).filter((f) => f.endsWith(".ts") && f !== "index.ts");
+
+files.forEach((f) => {
+    const filePath = join(protoGeneratedPath, f);
     const name = basename(f, ".ts");
-    return `export * as ${name} from "./src/protos/${name}";`;
-  }),
+    let content = readFileSync(filePath, "utf-8");
+
+    // Rename protobufPackage
+    const newPackageName = `protobuf${name.charAt(0).toUpperCase() + name.slice(1)}Package`;
+    content = content.replace(/export const protobufPackage = /, `export const ${newPackageName} = `);
+
+    writeFileSync(filePath, content);
+});
+
+const exportLines = [
+    `export * from "./google/protobuf/struct";`,
+    ...files.map((f) => {
+        const name = basename(f, ".ts");
+
+        return `export * from "./src/protos/${name}";`;
+    }),
 ];
 
 writeFileSync(join(outputPath, "index.ts"), exportLines.join("\n") + "\n");

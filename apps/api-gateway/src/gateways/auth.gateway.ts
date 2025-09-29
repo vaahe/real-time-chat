@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import type { ClientGrpc } from "@nestjs/microservices";
 import { Client, Transport } from "@nestjs/microservices";
 import { Controller, Post, Body, OnModuleInit } from "@nestjs/common";
-import { AUTH_PACKAGE_NAME, AuthServiceClient, RegisterUserResponse, type RegisterUserRequest } from "@vaahe/proto";
+import { auth } from '@vaahe/proto';
 
 
 @Controller('auth')
@@ -13,7 +13,7 @@ export class AuthGateway implements OnModuleInit {
         transport: Transport.GRPC,
         options: {
             url: 'localhost:3001',
-            package: AUTH_PACKAGE_NAME,
+            package: ,
             protoPath: join(__dirname, '../../../libs/proto/src/auth.proto')
         },
     })

@@ -27,8 +27,8 @@ importers:
         specifier: ^11.0.0
         version: 11.1.6(@nestjs/common@11.1.6(reflect-metadata@0.1.14)(rxjs@7.8.2))(@nestjs/core@11.1.6)
       '@vaahe/proto':
-        specifier: ^0.0.2
-        version: 0.0.2
+        specifier: ^0.0.3
+        version: 0.0.3
       axios:
         specifier: ^1.6.0
         version: 1.12.2
@@ -3334,8 +3334,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@vaahe/proto@0.0.2':
-    resolution: {integrity: sha512-q//CHvjTfPdHrFmo7KVEDUJphNf6vh2OzYUHrvuYw7UYF2l4V6DB0GpaNgLBImn74uq2cRGB8m5ZFhrdTuwihA==, tarball: https://npm.pkg.github.com/download/@vaahe/proto/0.0.2/b3f4421dfbbf8e623bd99bf9617b93aa227e42dd}
+  '@vaahe/proto@0.0.3':
+    resolution: {integrity: sha512-M3/FvOoPr3NNGJumWdI7Xj3RnwS3ZsdQ42znT5jtpp2KzJDbsHVtBxGNS7bK82Mx4zqUuPno5qHtlkMEjF0e7g==, tarball: https://npm.pkg.github.com/download/@vaahe/proto/0.0.3/2058f1727ffef9b7c66f02e83544943b9d4f29b8}
 
   '@vitest/coverage-v8@3.2.4':
     resolution: {integrity: sha512-EyF9SXU6kS5Ku/U82E259WSnvg6c8KTjppUncuNdm5QHpe17mwREHnjDzozC8x9MZ0xfBUFSaLkRv4TMA75ALQ==}
@@ -12911,7 +12911,7 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.11.1':
     optional: true
 
-  '@vaahe/proto@0.0.2':
+  '@vaahe/proto@0.0.3':
     dependencies:
       '@grpc/grpc-js': 1.14.0
       '@grpc/proto-loader': 0.8.0
