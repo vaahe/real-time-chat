@@ -1,10 +1,31 @@
 import { Module } from '@nestjs/common';
-import { AuthController } from './controllers/auth.controller';
+import { ConfigModule } from '@nestjs/config';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+
 import { AuthService } from './services/auth.service';
+import { PrismaAuthService } from './services/prisma.service';
+import { AuthController } from './controllers/auth.controller';
 
 @Module({
-  imports: [],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    ClientsModule.register([
+      {
+        name: 'AUTH_KAFKA_CLIENT',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: 'auth-service',
+            brokers: ['localhost:9092']
+          },
+          consumer: {
+            groupId: 'auth-consumer'
+          }
+        }
+      }
+    ])
+  ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, PrismaAuthService],
 })
 export class AuthModule { }
