@@ -63,15 +63,15 @@
           "build"
         ],
         "options": {
-          "buildTarget": "@real-time-chat/user-service:build",
+          "buildTarget": "user-service:build",
           "runBuildTargetDependencies": false
         },
         "configurations": {
           "development": {
-            "buildTarget": "@real-time-chat/user-service:build:development"
+            "buildTarget": "user-service:build:development"
           },
           "production": {
-            "buildTarget": "@real-time-chat/user-service:build:production"
+            "buildTarget": "user-service:build:production"
           }
         }
       },

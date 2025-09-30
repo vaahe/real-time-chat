@@ -11,4 +11,8 @@ describe('AuthController', () => {
       providers: [AuthService],
     }).compile();
   });
+
+  it('should be defined', () => {
+    expect(authModule).toBeDefined();
+  });
 });

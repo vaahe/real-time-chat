@@ -15,24 +15,9 @@ async function bootstrap() {
     }
   });
 
-  const kafkaApp = await NestFactory.createMicroservice<MicroserviceOptions>(UserModule, {
-    transport: Transport.KAFKA,
-    options: {
-      client: {
-        clientId: 'user-service',
-        brokers: ['localhost:9092']
-      },
-      consumer: {
-        groupId: 'user-consumer'
-      },
-    },
-  });
+  await grpcApp.listen();
 
-  await Promise.all([grpcApp.listen(), kafkaApp.listen()]);
-
-  Logger.log(`🚀 Application is running on:`);
-  Logger.log('gRPC -> :3002');
-  Logger.log('kafka -> broker localhost:9092');
+  Logger.log(`🚀 Application is running on: gRPC -> :3002`);
 }
 
 bootstrap();

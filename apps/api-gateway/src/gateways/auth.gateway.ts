@@ -14,7 +14,7 @@ export class AuthGateway implements OnModuleInit {
         options: {
             url: 'localhost:3001',
             package: AUTH_PACKAGE_NAME,
-            protoPath: join(__dirname, '../../../libs/proto/src/auth.proto')
+            protoPath: join(__dirname, '../../../libs/proto/src/protos/auth.proto')
         },
     })
     private client!: ClientGrpc;

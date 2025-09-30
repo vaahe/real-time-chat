@@ -1,24 +1,26 @@
-import { Inject, Injectable } from "@nestjs/common";
-import type { ClientKafka } from "@nestjs/microservices";
+import { Injectable } from "@nestjs/common";
 import { SignInRequest, SignInResponse, SignUpRequest, SignUpResponse } from '@vaahe/proto';
+import { AuthProducer } from "../producers/auth.producer";
+import { AuthRepository } from "../repositories/auth.repository";
 
 @Injectable()
 export class AuthService {
-  constructor(@Inject('AUTH_KAFKA_CLIENT') private readonly kafka: ClientKafka) { }
+  constructor(
+    private readonly authProducer: AuthProducer,
+    private readonly authRepository: AuthRepository
+  ) { }
 
   async signUp(request: SignUpRequest): Promise<SignUpResponse> {
-    const { firstName, lastName, email, password, role } = request;
-    const user = { firstName, lastName, email, password, role };
+    await this.authRepository.signUp(request);
+    this.authProducer.sendUserSignupEvent(request);
 
-    this.kafka.emit('user.signup', { user });
-
-    return { data: { statusCode: 201, message: 'User created', data: { ...user } } };
+    return { data: { statusCode: 201, message: 'User created', data: request } };
   }
 
   async signIn(request: SignInRequest): Promise<SignInResponse> {
     const { email, password } = request;
     const user = { email, password };
 
-    return { data: { statusCode: 201, message: 'User created', data: { ...user } } };
+    return { data: { statusCode: 201, message: 'Logged in', data: { ...user } } };
   }
 }

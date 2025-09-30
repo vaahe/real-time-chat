@@ -10,8 +10,18 @@ export class UserConsumer {
     constructor(private readonly userRepository: UserRepository) { };
 
     @MessagePattern('user.signup')
-    async handleUserSignup(@Payload() payload: SignUpRequest) {
+    async handleUserRegistered(@Payload() payload: SignUpRequest) {
         this.logger.log(`Received signup event: ${JSON.stringify(payload)}`);
-        await this.userRepository.create(payload);
+
+        // try {
+        //     await this.userRepository.create(payload);
+        //     this.logger.log(`✅ User created: ${payload.email}`);
+        // } catch (error: unknown) {
+        //     if (error instanceof Error) {
+        //         this.logger.error(`❌ Failed to create user: ${error.message}`);
+        //     }
+
+        //     throw new Error('Failed to create user: Unknown error.');
+        // }
     }
 }

@@ -6,7 +6,7 @@
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { AuthModule } from './app/auth.module';
+import { AuthModule } from './app/modules/auth.module';
 import { join } from 'path';
 
 async function bootstrap() {
@@ -19,23 +19,8 @@ async function bootstrap() {
     }
   });
 
-  const kafkaApp = await NestFactory.createMicroservice<MicroserviceOptions>(AuthModule, {
-    transport: Transport.KAFKA,
-    options: {
-      client: {
-        clientId: 'auth-service',
-        brokers: ['localhost:9092']
-      },
-      consumer: {
-        groupId: 'auth-consumer'
-      },
-    },
-  });
-
-  await Promise.all([grpcApp.listen(), kafkaApp.listen()]);
-  Logger.log(`🚀 Application is running on:`);
-  Logger.log('gRPC -> :3001');
-  Logger.log('kafka -> broker localhost:9092');
+  await grpcApp.listen();
+  Logger.log(`🚀 Application is running on: gRPC -> :3001`);
 }
 
 bootstrap();

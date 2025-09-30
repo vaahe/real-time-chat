@@ -2,9 +2,11 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
-import { AuthService } from './services/auth.service';
-import { PrismaAuthService } from './services/prisma.service';
-import { AuthController } from './controllers/auth.controller';
+import { AuthService } from '../services/auth.service';
+import { AuthProducer } from '../producers/auth.producer';
+import { PrismaAuthService } from '../services/prisma.service';
+import { AuthController } from '../controllers/auth.controller';
+import { AuthRepository } from '../repositories/auth.repository';
 
 @Module({
   imports: [
@@ -20,12 +22,13 @@ import { AuthController } from './controllers/auth.controller';
           },
           consumer: {
             groupId: 'auth-consumer'
-          }
+          },
+          producerOnlyMode: true
         }
       }
     ])
   ],
   controllers: [AuthController],
-  providers: [AuthService, PrismaAuthService],
+  providers: [AuthProducer, AuthService, PrismaAuthService, AuthRepository],
 })
 export class AuthModule { }
