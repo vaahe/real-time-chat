@@ -8,6 +8,6 @@ export class AuthProducer {
     constructor(@Inject('AUTH_KAFKA_CLIENT') private readonly kafka: ClientKafka) { }
 
     sendUserSignupEvent(payload: SignUpRequest): Observable<any> {
-        return this.kafka.emit('user.created', payload);
+        return this.kafka.emit('user.signup', payload);
     }
 }

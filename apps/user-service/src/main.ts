@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { Partitioners } from 'kafkajs';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
@@ -6,7 +7,9 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { UserModule } from './app/modules/user.module';
 
 async function bootstrap() {
-  const grpcApp = await NestFactory.createMicroservice<MicroserviceOptions>(UserModule, {
+  const app = await NestFactory.create(UserModule);
+
+  const grpcApp = app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
       package: 'user',
@@ -15,9 +18,26 @@ async function bootstrap() {
     }
   });
 
-  await grpcApp.listen();
 
-  Logger.log(`🚀 Application is running on: gRPC -> :3002`);
+  const kafkaApp = app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.KAFKA,
+    options: {
+      client: {
+        clientId: 'user-service-client',
+        brokers: ['127.0.0.1:9092'],
+        createPartitioner: Partitioners.LegacyPartitioner
+      },
+      consumer: {
+        groupId: 'user-consumer-group'
+      }
+    }
+  });
+
+  await app.startAllMicroservices();
+  await app.listen(3002);
+
+  Logger.log('🚀 gRPC running on 0.0.0.0:3002');
+  Logger.log('🚀 Kafka consumer connected');
 }
 
 bootstrap();

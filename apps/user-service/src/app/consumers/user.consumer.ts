@@ -1,27 +1,39 @@
+import { Injectable, OnModuleInit, OnModuleDestroy, Logger } from '@nestjs/common';
+import { Kafka, EachMessagePayload } from 'kafkajs';
 import type { SignUpRequest } from '@vaahe/proto';
-import { Injectable, Logger } from "@nestjs/common";
-import { MessagePattern, Payload } from "@nestjs/microservices";
-import { UserRepository } from "../repositories/user.repository";
 
 @Injectable()
-export class UserConsumer {
+export class UserConsumer implements OnModuleInit, OnModuleDestroy {
     private readonly logger = new Logger(UserConsumer.name);
+    private kafka!: Kafka;
+    private consumer: any;
 
-    constructor(private readonly userRepository: UserRepository) { };
+    onModuleInit = async () => {
+        this.kafka = new Kafka({
+            clientId: 'user-service-client',
+            brokers: ['127.0.0.1:9092'], // or localhost if outside docker
+        });
 
-    @MessagePattern('user.signup')
-    async handleUserRegistered(@Payload() payload: SignUpRequest) {
-        this.logger.log(`Received signup event: ${JSON.stringify(payload)}`);
+        this.consumer = this.kafka.consumer({ groupId: 'user-consumer-group' });
+        await this.consumer.connect();
+        this.logger.log('Kafka consumer connected');
 
-        // try {
-        //     await this.userRepository.create(payload);
-        //     this.logger.log(`✅ User created: ${payload.email}`);
-        // } catch (error: unknown) {
-        //     if (error instanceof Error) {
-        //         this.logger.error(`❌ Failed to create user: ${error.message}`);
-        //     }
+        await this.consumer.subscribe({ topic: 'user.signup', fromBeginning: true });
+        this.logger.log('Subscribed to topic user.signup');
 
-        //     throw new Error('Failed to create user: Unknown error.');
-        // }
-    }
+        await this.consumer.run({
+            eachMessage: async ({ topic, partition, message }: EachMessagePayload) => {
+                const value = message.value?.toString();
+                this.logger.log(`Received message from topic ${topic}: ${value}`);
+                const payload: SignUpRequest = JSON.parse(value || '{}');
+
+                // await this.userRepository.create(payload);
+            },
+        });
+    };
+
+    onModuleDestroy = async () => {
+        await this.consumer.disconnect();
+        this.logger.log('Kafka consumer disconnected');
+    };
 }

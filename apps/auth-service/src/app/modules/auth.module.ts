@@ -7,6 +7,7 @@ import { AuthProducer } from '../producers/auth.producer';
 import { PrismaAuthService } from '../services/prisma.service';
 import { AuthController } from '../controllers/auth.controller';
 import { AuthRepository } from '../repositories/auth.repository';
+import { Partitioners } from 'kafkajs';
 
 @Module({
   imports: [
@@ -17,11 +18,12 @@ import { AuthRepository } from '../repositories/auth.repository';
         transport: Transport.KAFKA,
         options: {
           client: {
-            clientId: 'auth-service',
-            brokers: ['localhost:9092']
+            clientId: 'auth-service-client',
+            brokers: ['127.0.0.1:9092'],
+            createPartitioner: Partitioners.LegacyPartitioner
           },
           consumer: {
-            groupId: 'auth-consumer'
+            groupId: 'auth-consumer-group'
           },
           producerOnlyMode: true
         }

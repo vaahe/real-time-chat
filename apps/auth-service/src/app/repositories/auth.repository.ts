@@ -7,13 +7,13 @@ export class AuthRepository {
     constructor(@Inject() private readonly prisma: PrismaAuthService) { }
 
     async signUp(data: SignUpRequest) {
-        await this.prisma.authCredential.create({
-            data: {
-                userId: '12',
-                hashedPassword: '23',
-                createdAt: Date.now().toString(),
-            }
-        });
+        // await this.prisma.authCredential.create({
+        //     data: {
+        //         userId: '12',
+        //         hashedPassword: '23',
+        //     }
+        // });
+        console.log(data);
     }
 
     async signIn(email: string) {

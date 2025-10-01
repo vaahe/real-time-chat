@@ -9,6 +9,6 @@ export class AuthController {
 
   @GrpcMethod('AuthService', 'SignUp')
   async signUp(request: SignUpRequest): Promise<SignUpResponse> {
-    return this.authService.signIn(request);
+    return this.authService.signUp(request);
   }
 }
