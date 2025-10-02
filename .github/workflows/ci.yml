@@ -9,11 +9,14 @@ on:
 permissions:
   contents: read
   actions: read
+  packages: read
 
 jobs:
   setup:
-    name: Setup Node, pnpm and Nx Cloud
+    name: Setup Node, pnpm, and Nx Cloud
     runs-on: ubuntu-latest
+    outputs:
+      nx-cloud-cache-key: ${{ steps.nx-cloud.outputs.cache-hit }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -31,14 +34,24 @@ jobs:
         with:
           node-version: 20
           cache: "pnpm"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@vaahe"
 
-      # Install dependencies
+      - name: Authenticate GitHub Packages
+        run: |
+          echo "//npm.pkg.github.com/:authToken=${GH_TOKEN}" > ~/.npmrc
+          echo "@vaahe:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      # Start Nx Cloud CI run for distributed caching
       - name: Start Nx Cloud CI Run
-        run: pnpm nx start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="build"
+        id: nx-cloud
+        run: pnpm nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="build"
         env:
           NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
@@ -63,9 +76,20 @@ jobs:
         with:
           node-version: 20
           cache: "pnpm"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@vaahe"
+
+      - name: Authenticate GitHub Packages
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${GH_TOKEN}" > ~/.npmrc
+          echo "@vaahe:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Run lint
         run: pnpm nx affected --target=lint --parallel=3 --nx-cloud
@@ -93,9 +117,20 @@ jobs:
         with:
           node-version: 20
           cache: "pnpm"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@vaahe"
+
+      - name: Authenticate GitHub Packages
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${GH_TOKEN}" > ~/.npmrc
+          echo "@vaahe:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Run unit tests
         run: pnpm nx affected --target=test --parallel=3 --nx-cloud --code-coverage
@@ -123,9 +158,20 @@ jobs:
         with:
           node-version: 20
           cache: "pnpm"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@vaahe"
+
+      - name: Authenticate GitHub Packages
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${GH_TOKEN}" > ~/.npmrc
+          echo "@vaahe:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Build projects
         run: pnpm nx affected --target=build --parallel=3 --nx-cloud
@@ -149,7 +195,7 @@ jobs:
   #     - name: Install pnpm
   #       uses: pnpm/action-setup@v4
   #       with:
-  #         version: 10.17.1
+  #         version: 10.17.1.17.1
   #         run_install: false
 
   #     - name: Nx fix-ci
