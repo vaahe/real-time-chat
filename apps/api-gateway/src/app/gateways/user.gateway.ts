@@ -1,7 +1,7 @@
 import { join } from "path";
 import { Body, Controller, OnModuleInit, Post } from "@nestjs/common";
 import { Client, type ClientGrpc, Transport } from "@nestjs/microservices";
-import { CreateUserRequest, type SignUpRequest, SignUpResponse, UserServiceClient } from "@vaahe/proto";
+import { type SignUpRequest, SignUpResponse, UserServiceClient } from "@vaahe/proto";
 import { Observable } from "rxjs";
 
 @Controller('user')

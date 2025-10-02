@@ -9,7 +9,7 @@ import { UserModule } from './app/modules/user.module';
 async function bootstrap() {
   const app = await NestFactory.create(UserModule);
 
-  const grpcApp = app.connectMicroservice<MicroserviceOptions>({
+  app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
       package: 'user',
@@ -18,8 +18,7 @@ async function bootstrap() {
     }
   });
 
-
-  const kafkaApp = app.connectMicroservice<MicroserviceOptions>({
+  app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.KAFKA,
     options: {
       client: {
@@ -34,7 +33,6 @@ async function bootstrap() {
   });
 
   await app.startAllMicroservices();
-  await app.listen(3002);
 
   Logger.log('🚀 gRPC running on 0.0.0.0:3002');
   Logger.log('🚀 Kafka consumer connected');
