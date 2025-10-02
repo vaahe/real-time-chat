@@ -7,104 +7,150 @@ on:
   pull_request:
 
 permissions:
-  actions: read
   contents: read
+  actions: read
 
 jobs:
   setup:
-    name: Setup Node & pnpm
+    name: Setup Node, pnpm and Nx Cloud
     runs-on: ubuntu-latest
-    outputs:
-      cache-key: ${{ steps.cache.outputs.cache-hit }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          filter: tree:0
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.17.1
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
-          check-latest: true
+          cache: "pnpm"
 
-      - run: pnpm install --frozen-lockfile
+      # Install dependencies
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
+      # Start Nx Cloud CI run for distributed caching
       - name: Start Nx Cloud CI Run
         run: pnpm nx start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="build"
+        env:
+          NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
   lint:
     name: Lint affected projects
     needs: setup
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.17.1
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: "pnpm"
 
-      - run: pnpm install --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Run lint
-        run: pnpm nx affected --target=lint --parallel --nx-cloud
+        run: pnpm nx affected --target=lint --parallel=3 --nx-cloud
+        env:
+          NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
   test:
     name: Test affected projects
     needs: setup
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          fecth-depth: 0
+          fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.17.1
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: "pnpm"
 
-      - run: pnpm install --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Run unit tests
-        run: pnpm nx affected --target=test --parallel --nx-cloud --code-coverage
+        run: pnpm nx affected --target=test --parallel=3 --nx-cloud --code-coverage
+        env:
+          NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
   build:
     name: Build affected projects
     needs: setup
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.17.1
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "pnpm"
 
-      - run: pnpm install --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Build projects
-        run: pnpm nx affected --target=build --parallel --nx-cloud
+        run: pnpm nx affected --target=build --parallel=3 --nx-cloud
+        env:
+          NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
-  fix-ci:
-    name: Nx fix CI
-    needs: [lint, test, build]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fecth-depth: 0
+  # fix-ci:
+  #   name: Nx fix CI
+  #   needs: [lint, test, build]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "pnpm"
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 20
+  #         cache: "pnpm"
 
-      - run: pnpm install --frozen-lockfile
+  #     - name: Install pnpm
+  #       uses: pnpm/action-setup@v4
+  #       with:
+  #         version: 10.17.1
+  #         run_install: false
 
-      - name: Nx fix-ci
-        run: pnpm nx fix-ci
+  #     - name: Nx fix-ci
+  #       run: pnpm nx fix-ci
