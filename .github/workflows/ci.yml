@@ -49,12 +49,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Start Nx Cloud CI Run
-        id: nx-cloud
-        run: |
-          pnpm nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="build" --output-style=json > nx-cloud-output.json
-          RUN_ID=$(cat nx-cloud-output.json | jq -r '.runId')
-          echo "run-id=$RUN_ID" >> $GITHUB_OUTPUT
+      # - name: Start Nx Cloud CI Run
+      #   id: nx-cloud
+      #   run: |
+      #     pnpm nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="build" --output-style=json > nx-cloud-output.json
+      #     RUN_ID=$(cat nx-cloud-output.json | jq -r '.runId')
+      #     echo "run-id=$RUN_ID" >> $GITHUB_OUTPUT
 
   lint:
     name: Lint affected projects
