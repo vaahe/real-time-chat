@@ -11,6 +11,10 @@ permissions:
   actions: read
   packages: read
 
+env:
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+
 jobs:
   setup:
     name: Setup Node, pnpm, and Nx Cloud
@@ -35,25 +39,19 @@ jobs:
           node-version: 20
           cache: "pnpm"
           registry-url: "https://npm.pkg.github.com"
-          scope: "@vaahe"
 
       - name: Authenticate GitHub Packages
         run: |
-          echo "//npm.pkg.github.com/:authToken=${GH_TOKEN}" > ~/.npmrc
-          echo "@vaahe:registry=https://npm.pkg.github.com/" >> ~/.npmrc
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" > ~/.npmrc
+          echo "@vaahe:registry=https://npm.pkg.github.com" >> ~/.npmrc
+          echo "always-auth=true" >> ~/.npmrc
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Start Nx Cloud CI Run
         id: nx-cloud
         run: pnpm nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="build"
-        env:
-          NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
   lint:
     name: Lint affected projects
@@ -82,19 +80,13 @@ jobs:
       - name: Authenticate GitHub Packages
         run: |
           echo "//npm.pkg.github.com/:_authToken=${GH_TOKEN}" > ~/.npmrc
-          echo "@vaahe:registry=https://npm.pkg.github.com/" >> ~/.npmrc
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          echo "@vaahe:registry=https://npm.pkg.github.com" >> ~/.npmrc
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Run lint
         run: pnpm nx affected --target=lint --parallel=3 --nx-cloud
-        env:
-          NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
   test:
     name: Test affected projects
@@ -123,19 +115,13 @@ jobs:
       - name: Authenticate GitHub Packages
         run: |
           echo "//npm.pkg.github.com/:_authToken=${GH_TOKEN}" > ~/.npmrc
-          echo "@vaahe:registry=https://npm.pkg.github.com/" >> ~/.npmrc
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          echo "@vaahe:registry=https://npm.pkg.github.com" >> ~/.npmrc
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Run unit tests
         run: pnpm nx affected --target=test --parallel=3 --nx-cloud --code-coverage
-        env:
-          NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
   build:
     name: Build affected projects
@@ -164,19 +150,13 @@ jobs:
       - name: Authenticate GitHub Packages
         run: |
           echo "//npm.pkg.github.com/:_authToken=${GH_TOKEN}" > ~/.npmrc
-          echo "@vaahe:registry=https://npm.pkg.github.com/" >> ~/.npmrc
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          echo "@vaahe:registry=https://npm.pkg.github.com" >> ~/.npmrc
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Build projects
         run: pnpm nx affected --target=build --parallel=3 --nx-cloud
-        env:
-          NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
   # fix-ci:
   #   name: Nx fix CI
