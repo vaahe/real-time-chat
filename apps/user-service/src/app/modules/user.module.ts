@@ -9,7 +9,7 @@ import { UserRepository } from '../repositories/user.repository';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true })],
-  controllers: [UserController],
-  providers: [UserService, UserRepository, UserConsumer, PrismaUserService],
+  controllers: [UserController, UserConsumer],
+  providers: [UserService, UserRepository, PrismaUserService],
 })
 export class UserModule { }

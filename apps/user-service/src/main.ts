@@ -22,12 +22,12 @@ async function bootstrap() {
     transport: Transport.KAFKA,
     options: {
       client: {
-        clientId: 'user-service-client',
+        clientId: 'user-service',
         brokers: ['127.0.0.1:9092'],
         createPartitioner: Partitioners.LegacyPartitioner
       },
       consumer: {
-        groupId: 'user-consumer-group'
+        groupId: 'user-consumer'
       }
     }
   });

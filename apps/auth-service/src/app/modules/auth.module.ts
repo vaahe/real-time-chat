@@ -18,12 +18,12 @@ import { Partitioners } from 'kafkajs';
         transport: Transport.KAFKA,
         options: {
           client: {
-            clientId: 'auth-service-client',
+            clientId: 'auth-service',
             brokers: ['127.0.0.1:9092'],
             createPartitioner: Partitioners.LegacyPartitioner
           },
           consumer: {
-            groupId: 'auth-consumer-group'
+            groupId: 'auth-consumer'
           },
           producerOnlyMode: true
         }
