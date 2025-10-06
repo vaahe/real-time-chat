@@ -8,10 +8,15 @@ import { PrismaAuthService } from '../services/prisma.service';
 import { AuthController } from '../controllers/auth.controller';
 import { AuthRepository } from '../repositories/auth.repository';
 import { Partitioners } from 'kafkajs';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1h' }
+    }),
     ClientsModule.register([
       {
         name: 'AUTH_KAFKA_CLIENT',
@@ -26,6 +31,15 @@ import { Partitioners } from 'kafkajs';
             groupId: 'auth-consumer'
           },
           producerOnlyMode: true
+        }
+      },
+      {
+        name: 'USER_SERVICE',
+        transport: Transport.GRPC,
+        options: {
+          package: 'user',
+          protoPath: '../../../libs/proto/src/protos/user.proto',
+          url: '0.0.0.0:3002',
         }
       }
     ])

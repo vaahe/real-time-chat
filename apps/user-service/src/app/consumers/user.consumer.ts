@@ -1,5 +1,5 @@
 import { Controller, Logger } from '@nestjs/common';
-import type { SignUpRequest } from '@vaahe/proto';
+import type { SignInRequest, SignUpRequest } from '@vaahe/proto';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { UserService } from '../services/user.service';
 
@@ -13,5 +13,10 @@ export class UserConsumer {
     async signUp(@Payload() data: SignUpRequest) {
         await this.userService.createUser(data);
         this.logger.log(`Received data from Kafka: ${JSON.stringify(data)}`);
+    }
+
+    @EventPattern('user.signin')
+    async signIn(@Payload() data: SignInRequest) {
+        await this.userService.getUserByEmail(data.email);
     }
 }

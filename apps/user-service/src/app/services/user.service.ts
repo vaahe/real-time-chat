@@ -16,7 +16,11 @@ export class UserService {
   }
 
   async getUserById(id: string): Promise<UserModel | null> {
-    return this.userRepository.findById(id);
+    return this.userRepository.getById(id);
+  }
+
+  async getUserByEmail(email: string): Promise<UserModel | null> {
+    return this.userRepository.getByEmail(email);
   }
 
   async listUsers(): Promise<UserModel[]> {

@@ -6,17 +6,20 @@ import { SignUpRequest } from "@vaahe/proto";
 export class AuthRepository {
     constructor(@Inject() private readonly prisma: PrismaAuthService) { }
 
-    async signUp(data: SignUpRequest) {
-        // await this.prisma.authCredential.create({
-        //     data: {
-        //         userId: '12',
-        //         hashedPassword: '23',
-        //     }
-        // });
-        console.log(data);
+    async findByUsername(username: string) {
+        return this.prisma.authCredential.findUnique({
+            where: { username }
+        });
     }
 
-    async signIn(email: string) {
-        return { email };
+    async updateLastLogin(userId: string) {
+        await this.prisma.authCredential.update({
+            where: {
+                userId
+            },
+            data: {
+                lastLoginAt: new Date()
+            }
+        })
     }
 }

@@ -14,27 +14,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// id          String      @id @default(uuid())
-// firstName   String      @map("first_name")
-// lastName    String?     @map("last_name")
-// username    String
-// email       String      @unique
-// phone       String
-// password    String
-// avatar      String?
-
-// createdAt   DateTime    @default(now())         @map("created_at")
-// updatedAt   DateTime    @updatedAt              @map("updated_at")
-// lastLoginAt DateTime?   @map("last_login_at")
 model User {
-  id          String      @id @default(uuid())
-  firstName   String      @map("first_name")
-  lastName    String      @map("last_name")
-  email       String      @unique
-  phone       String
-  role        String
+  id         String     @id @default(uuid())
+  firstName  String?    @map("first_name")
+  lastName   String?    @map("last_name")
+  username   String?    @map("nickname")
+  email      String     @unique
+  phone      String?    @map("phone")
+  avatar     String?    @map("avatar")
 
-  createdAt   DateTime    @default(now()) 
+  createdAt  DateTime   @default(now())  @map("created_at")
+  updatedAt  DateTime   @updatedAt       @map("updated_at")
 
-  @@map("user")
+  @@map("users")
+  @@index([email])
 }
