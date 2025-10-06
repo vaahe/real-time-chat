@@ -1,9 +1,10 @@
-import { Inject, Injectable, OnModuleInit } from "@nestjs/common";
-import { SignInRequest, SignInResponse, SignUpRequest, SignUpResponse, type UserServiceClient } from '@vaahe/proto';
-import { AuthProducer } from "../producers/auth.producer";
-import { AuthRepository } from "../repositories/auth.repository";
 import { JwtService } from '@nestjs/jwt';
 import type { ClientGrpc } from "@nestjs/microservices";
+import { Inject, Injectable, OnModuleInit } from "@nestjs/common";
+import { SignInRequest, SignInResponse, SignUpRequest, SignUpResponse, type UserServiceClient } from '@vaahe/proto';
+
+import { AuthProducer } from "../producers/auth.producer";
+import { AuthRepository } from "../repositories/auth.repository";
 
 @Injectable()
 export class AuthService implements OnModuleInit {

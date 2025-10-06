@@ -23,9 +23,8 @@ export interface SignUpRequest {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string;
+  username: string;
   password: string;
-  role: string;
 }
 
 export interface SignUpResponse {
@@ -34,12 +33,15 @@ export interface SignUpResponse {
 
 /** Login */
 export interface SignInRequest {
-  email: string;
+  username: string;
   password: string;
 }
 
 export interface SignInResponse {
-  data: AuthServiceResponse | undefined;
+  statusCode: number;
+  message: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 /** Logout */
@@ -58,6 +60,8 @@ export interface RefreshTokenRequest {
 
 export interface RefreshTokenResponse {
   data: AuthServiceResponse | undefined;
+  message: string;
+  newAccessToken: string;
 }
 
 export const AUTH_PACKAGE_NAME = "auth";

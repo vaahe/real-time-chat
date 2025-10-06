@@ -6,53 +6,61 @@
 
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
-import { wrappers } from "protobufjs";
 import { Observable } from "rxjs";
-import { Struct } from "../../google/protobuf/struct";
 
 export const protobufUserPackage = "user";
 
+/** User entity */
+export interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  nickname: string;
+  email: string;
+  phone: string;
+  avatar: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/** Generic single-user response */
 export interface UserServiceResponse {
   statusCode: number;
   message: string;
-  data: { [key: string]: any } | undefined;
+  data: User | undefined;
 }
 
-/** Create */
+/** Generic list response */
+export interface ListUsersResponse {
+  statusCode: number;
+  message: string;
+  data: User[];
+  total: number;
+}
+
+/** Requests */
 export interface CreateUserRequest {
   firstName: string;
   lastName: string;
   nickname: string;
   email: string;
   phone: string;
-  password: string;
   avatar: string;
 }
 
-export interface CreateUserResponse {
-  data: UserServiceResponse | undefined;
-}
-
-/** Get single user */
-export interface GetUserRequest {
+export interface GetUserByIdRequest {
   id: string;
 }
 
-export interface GetUserResponse {
-  data: UserServiceResponse | undefined;
+export interface GetUserByEmailRequest {
+  email: string;
 }
 
-/** List users */
 export interface ListUsersRequest {
   page: number;
   pageSize: number;
 }
 
-export interface ListUsersResponse {
-  data: UserServiceResponse | undefined;
-}
-
-/** Update */
 export interface UpdateUserRequest {
   id: string;
   firstName: string;
@@ -60,64 +68,67 @@ export interface UpdateUserRequest {
   nickname: string;
   email: string;
   phone: string;
-  password: string;
   avatar: string;
 }
 
-export interface UpdateUserResponse {
-  data: UserServiceResponse | undefined;
-}
-
-/** Delete */
 export interface DeleteUserRequest {
   id: string;
 }
 
-export interface DeleteUserResponse {
-  data: UserServiceResponse | undefined;
-}
-
 export const USER_PACKAGE_NAME = "user";
 
-wrappers[".google.protobuf.Struct"] = { fromObject: Struct.wrap, toObject: Struct.unwrap } as any;
-
-/** Service */
+/** Service definition */
 
 export interface UserServiceClient {
-  createUser(request: CreateUserRequest): Observable<CreateUserResponse>;
+  createUser(request: CreateUserRequest): Observable<UserServiceResponse>;
 
-  getUser(request: GetUserRequest): Observable<GetUserResponse>;
+  getUserById(request: GetUserByIdRequest): Observable<UserServiceResponse>;
+
+  getUserByEmail(request: GetUserByEmailRequest): Observable<UserServiceResponse>;
 
   listUsers(request: ListUsersRequest): Observable<ListUsersResponse>;
 
-  updateUser(request: UpdateUserRequest): Observable<UpdateUserResponse>;
+  updateUser(request: UpdateUserRequest): Observable<UserServiceResponse>;
 
-  deleteUser(request: DeleteUserRequest): Observable<DeleteUserResponse>;
+  deleteUser(request: DeleteUserRequest): Observable<UserServiceResponse>;
 }
 
-/** Service */
+/** Service definition */
 
 export interface UserServiceController {
   createUser(
     request: CreateUserRequest,
-  ): Promise<CreateUserResponse> | Observable<CreateUserResponse> | CreateUserResponse;
+  ): Promise<UserServiceResponse> | Observable<UserServiceResponse> | UserServiceResponse;
 
-  getUser(request: GetUserRequest): Promise<GetUserResponse> | Observable<GetUserResponse> | GetUserResponse;
+  getUserById(
+    request: GetUserByIdRequest,
+  ): Promise<UserServiceResponse> | Observable<UserServiceResponse> | UserServiceResponse;
+
+  getUserByEmail(
+    request: GetUserByEmailRequest,
+  ): Promise<UserServiceResponse> | Observable<UserServiceResponse> | UserServiceResponse;
 
   listUsers(request: ListUsersRequest): Promise<ListUsersResponse> | Observable<ListUsersResponse> | ListUsersResponse;
 
   updateUser(
     request: UpdateUserRequest,
-  ): Promise<UpdateUserResponse> | Observable<UpdateUserResponse> | UpdateUserResponse;
+  ): Promise<UserServiceResponse> | Observable<UserServiceResponse> | UserServiceResponse;
 
   deleteUser(
     request: DeleteUserRequest,
-  ): Promise<DeleteUserResponse> | Observable<DeleteUserResponse> | DeleteUserResponse;
+  ): Promise<UserServiceResponse> | Observable<UserServiceResponse> | UserServiceResponse;
 }
 
 export function UserServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["createUser", "getUser", "listUsers", "updateUser", "deleteUser"];
+    const grpcMethods: string[] = [
+      "createUser",
+      "getUserById",
+      "getUserByEmail",
+      "listUsers",
+      "updateUser",
+      "deleteUser",
+    ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("UserService", method)(constructor.prototype[method], method, descriptor);

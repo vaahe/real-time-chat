@@ -98,7 +98,7 @@
     "@nestjs/core": "^11.0.0",
     "@nestjs/platform-express": "^11.0.0",
     "@prisma/client": "^6.16.2",
-    "@vaahe/proto": "^0.0.4",
+    "@vaahe/proto": "^0.0.5",
     "axios": "^1.6.0",
     "kafkajs": "^2.2.4",
     "next": "~15.2.4",
