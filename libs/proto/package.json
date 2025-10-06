@@ -3,6 +3,7 @@
   "version": "0.0.6",
   "private": false,
   "type": "module",
+  "repository": "https://github.com/vaahe/real-time-chat",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
