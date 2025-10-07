@@ -1,12 +1,21 @@
 {
     "extends": "./tsconfig.json",
     "compilerOptions": {
-        "outDir": "dist",
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "declaration": true,
+        "emitDeclarationOnly": false,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "skipLibCheck": true
     },
     "include": [
-        "src"
+        "src/**/*.ts",
+        "src/generated/**/*.ts"
     ],
     "exclude": [
-        "src/generated/google/**/*"
+        "dist",
+        "node_modules",
+        "**/*.spec.ts"
     ]
 }
