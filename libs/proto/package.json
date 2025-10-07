@@ -1,8 +1,11 @@
 {
   "name": "@vaahe/proto",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "private": false,
   "type": "module",
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json"
+  },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
@@ -12,7 +15,6 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "@real-time-chat/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "default": "./dist/index.js"

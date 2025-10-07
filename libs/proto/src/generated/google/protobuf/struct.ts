@@ -52,24 +52,24 @@ export interface Struct_FieldsEntry {
 export interface Value {
   /** Represents a null value. */
   nullValue?:
-    | NullValue
-    | undefined;
+  | NullValue
+  | undefined;
   /** Represents a double value. */
   numberValue?:
-    | number
-    | undefined;
+  | number
+  | undefined;
   /** Represents a string value. */
   stringValue?:
-    | string
-    | undefined;
+  | string
+  | undefined;
   /** Represents a boolean value. */
   boolValue?:
-    | boolean
-    | undefined;
+  | boolean
+  | undefined;
   /** Represents a structured value. */
   structValue?:
-    | { [key: string]: any }
-    | undefined;
+  | { [key: string]: any }
+  | undefined;
   /** Represents a repeated `Value`. */
   listValue?: Array<any> | undefined;
 }
@@ -112,10 +112,6 @@ export const Struct: MessageFns<Struct> & StructWrapperFns = {
     return object;
   },
 };
-
-function createBaseValue(): Value {
-  return {};
-}
 
 export const Value: MessageFns<Value> & AnyValueWrapperFns = {
   wrap(value: any): Value {

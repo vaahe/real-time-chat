@@ -1,4 +1,6 @@
+import { Partitioners } from 'kafkajs';
 import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
@@ -7,8 +9,6 @@ import { AuthProducer } from '../producers/auth.producer';
 import { PrismaAuthService } from '../services/prisma.service';
 import { AuthController } from '../controllers/auth.controller';
 import { AuthRepository } from '../repositories/auth.repository';
-import { Partitioners } from 'kafkajs';
-import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
