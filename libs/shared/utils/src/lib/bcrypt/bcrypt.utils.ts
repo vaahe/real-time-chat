@@ -17,7 +17,7 @@ class BcryptError extends Error {
  * @returns A promise resolving to the hashed password.
  * @throws BcryptError if the password is invalid or hashing fails.
  * @example
- * const hashed = await hashPassword('myPassword123');
+ * const hashed = await hashPassword('testPassword123');
  * console.log(hashed); // Outputs: $2b$10$...
  */
 export async function hashPassword(password: string, saltRounds = 10): Promise<string> {
