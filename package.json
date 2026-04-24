@@ -1,6 +1,6 @@
 {
   "name": "@real-time-chat/source",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "packageManager": "pnpm@10.17.1",
   "scripts": {
